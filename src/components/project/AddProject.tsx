@@ -1,24 +1,34 @@
-// Bootstrap
+import React, { useRef } from 'react';
+
+// Bootstrap imports
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import React, { useRef } from 'react';
+import { errorHandler } from '../utils/errorHandler';
 
-interface NewProjectProps {
+// Props interface
+interface CreateProjectProps {
   onAddProject: (prjName: string) => void;
   prjId: number;
 }
 
-const NewProject: React.FC<NewProjectProps> = (props) => {
-  // Gets user input on project's name
+const AddProject: React.FC<CreateProjectProps> = ({ onAddProject, prjId }) => {
+  // Hooks
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // Submit handler
+  // Add project
   const ProjectSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    const prjName = nameInputRef.current?.value as string;
-    props.onAddProject(prjName);
+
+    try {
+      const enteredPrjName = nameInputRef.current?.value as string;
+
+      if (!enteredPrjName) throw new Error('You must inform a project name!');
+      onAddProject(enteredPrjName);
+    } catch (err) {
+      errorHandler(err);
+    }
   };
 
   return (
@@ -28,7 +38,7 @@ const NewProject: React.FC<NewProjectProps> = (props) => {
           <Form.Label>Project Id</Form.Label>
           <Form.Control
             disabled
-            placeholder={props.prjId.toString().padStart(3, '0')}
+            placeholder={prjId.toString().padStart(3, '0')}
             readOnly
             type="email"
           />
@@ -47,4 +57,4 @@ const NewProject: React.FC<NewProjectProps> = (props) => {
   );
 };
 
-export default NewProject;
+export default AddProject;
