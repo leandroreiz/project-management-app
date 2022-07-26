@@ -1,54 +1,53 @@
-// Bootstrap
+// ---------------------------------
+// Imports
+// ---------------------------------
+import React, { useEffect, useState } from 'react';
+
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 
-// FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { Project } from '../../models/Project.model';
-import React from 'react';
 
-// Props interface
-interface ProjectListProps {
-  projects: Project[];
-  onDeleteProject: (id: number) => void;
-}
+import { Project } from '../../interfaces/Project.interface';
 
-// Functional component
-const ListProjects: React.FC<ProjectListProps> = ({
-  projects,
-  onDeleteProject,
-}) => {
-  // Delete project handler
-  const deleteProjectHandler = (
-    event: React.MouseEvent<Element, MouseEvent>
-  ) => {
-    const prjId = event.currentTarget.getAttribute('data-id');
+// ---------------------------------
+// List all projects in database
+// ---------------------------------
+const ListProjects: React.FC = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
 
-    if (prjId) onDeleteProject(+prjId);
-  };
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const response = await fetch('/api/v1/projects');
+      const data = await response.json();
 
-  // Render
+      if (response.ok) setProjects(data.data);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <Container className="p-5 my-4 bg-light rounded-3">
       <Form>
         <Form.Group className="mb-2">
           {projects.map((project) => (
-            <InputGroup className="mb-2" key={project.id}>
+            <InputGroup className="mb-2" key={project._id}>
               <InputGroup.Text id="inputGroup-sizing-default">
-                {project.id.toString().padStart(3, '0')}
+                {project._id.toString().padStart(3, '0')}
               </InputGroup.Text>
               <Form.Control
                 aria-label="Project's name"
                 id="prj-list__name"
-                value={project.name}
+                value={project.projectName}
                 readOnly
               ></Form.Control>
               <Button
-                data-id={project.id}
-                onClick={deleteProjectHandler}
+                data-id={project._id}
+                onClick={() => console.log('Delte register')}
                 variant="outline-danger"
               >
                 <FontAwesomeIcon icon={solid('xmark')} />

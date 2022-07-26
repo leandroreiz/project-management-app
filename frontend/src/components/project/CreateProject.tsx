@@ -5,15 +5,15 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import ErrorAlert from '../utils/ErrorAlert';
+import ErrorAlert from '../util/ErrorAlert';
 
 // Props interface
-interface CreateProjectProps {
-  onAddProject: (prjName: string) => void;
-}
+// interface CreateProjectProps {
+//   onAddProject: (prjName: string) => void;
+// }
 
 // Functional component
-const CreateProject: React.FC<CreateProjectProps> = ({ onAddProject }) => {
+const CreateProject: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const [errorState, setErrorState] = useState<boolean>(false);
   let nameInputRef = useRef<HTMLInputElement>(null);
@@ -27,7 +27,7 @@ const CreateProject: React.FC<CreateProjectProps> = ({ onAddProject }) => {
 
       // Validate project's name
       if (!enteredPrjName) throw new Error('You must inform a project name!');
-      onAddProject(enteredPrjName);
+      // onAddProject(enteredPrjName);
 
       // Clear input
       nameInputRef.current!.value = '';
@@ -45,7 +45,6 @@ const CreateProject: React.FC<CreateProjectProps> = ({ onAddProject }) => {
     }
   };
 
-  // Render
   return (
     <Container className="p-5 my-4 bg-light rounded-3">
       {errorState ? <ErrorAlert message={message} /> : ''}

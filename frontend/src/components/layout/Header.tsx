@@ -13,7 +13,7 @@ const Header = () => (
       <Navbar.Brand href="/">Project Management</Navbar.Brand>
       <Nav className="ml-auto">
         <Nav.Link href="/">
-          <FontAwesomeIcon icon={solid('circle-question')} size="lg" />
+          <FontAwesomeIcon icon={solid('power-off')} size="lg" />
         </Nav.Link>
       </Nav>
     </Container>
